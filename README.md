@@ -24,3 +24,22 @@ EXAMPLE ERROR IN CONSOLE:
 ```
 Uncaught EvalError: Refused to evaluate a string as JavaScript because 'unsafe-eval' is not an allowed source of script in the following Content Security Policy directive: "script-src 'self' 'unsafe-inline'".
 ```
+
+FIX: rewrite function getGlobalObject:
+```
+function getGlobalObject() {
+    return window;
+}
+```
+
+to this
+
+```
+function getGlobalObject() {
+    try{
+        return new Function('return this')();
+    }catch(e){
+        return window;
+    }
+}
+```
